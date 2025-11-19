@@ -1,1 +1,3 @@
 IRAhandle_tweets_*
+uv.lock
+src/__pycache__/
