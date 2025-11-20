@@ -12,39 +12,38 @@ def basic_stats(df: DataFrame):
     total_tweets = df.count()
     unique_authors = df.select("author").distinct().count()
     unique_accounts = df.select("external_author_id").distinct().count()
-    
-    print(f"Total tweets: {total_tweets:,}")
-    print(f"Unique authors: {unique_authors:,}")
-    print(f"Unique accounts (IDs): {unique_accounts:,}")
+
+    print(f"We have a total of {total_tweets:,} tweets.")
+    print(f"{unique_authors:,} unique authors.")
+    print(f"{unique_accounts:,} unique accounts (IDs).")
     print()
-    
-    print("Distribution by account type:")
+    print("The distribution of accounts is as follows:")
     df.groupBy("account_type").count() \
         .orderBy(desc("count")) \
         .show(truncate=False)
-    
+
     print("Distribution by category:")
     df.groupBy("account_category").count() \
         .orderBy(desc("count")) \
         .show(truncate=False)
-    
+
     print("Distribution by region (top 10):")
     df.groupBy("region").count() \
         .orderBy(desc("count")) \
         .show(10, truncate=False)
-    
+
     print("Distribution by language:")
     df.groupBy("language").count() \
         .orderBy(desc("count")) \
         .show(truncate=False)
 
 
-def top_active_accounts(df: DataFrame, n=20):
-    print(f"Top {n} most active accounts:")
+def top_active_accounts(df: DataFrame, number_displayed=20):
+    print(f"Top {number_displayed} most active accounts:")
     df.groupBy("author", "account_type", "account_category") \
         .agg(count("*").alias("tweet_count")) \
         .orderBy(desc("tweet_count")) \
-        .show(n, truncate=False)
+        .show(number_displayed, truncate=False)
 
 
 def retweet_analysis(df: DataFrame):
@@ -58,12 +57,9 @@ def retweet_analysis(df: DataFrame):
         .withColumn("retweet_ratio", col("retweets") / col("total_tweets")) \
         .orderBy(desc("total_tweets")) \
         .show(20, truncate=False)
-    
-    # global stats
     total = df.count()
     retweets = df.filter(col("retweet") == "1").count()
     originals = df.filter(col("retweet") == "0").count()
-    
     print(f"\nGlobal: {retweets:,} retweets ({retweets/total*100:.1f}%) vs {originals:,} originals ({originals/total*100:.1f}%)")
     print()
 
@@ -77,7 +73,7 @@ def content_analysis(df: DataFrame):
             max("content_length").alias("max_length")
         ) \
         .show(truncate=False)
-    
+
     print("Duplicated content (top 10 identical tweets):")
     df.groupBy("content") \
         .agg(
@@ -94,23 +90,23 @@ def temporal_analysis(df: DataFrame):
         "timestamp",
         try_to_timestamp_func(col("publish_date"), "M/d/yyyy H:mm")
     ).filter(col("timestamp").isNotNull())
-    
+
     df_with_time = df_with_time.withColumn(
         "date",
         col("timestamp").cast("date")
     )
-    
+
     print("Tweet distribution by day (top 20):")
     df_with_time.groupBy("date") \
         .count() \
         .orderBy(desc("count")) \
         .show(20, truncate=False)
-    
+
     df_with_time = df_with_time.withColumn(
         "hour_of_day",
         hour(col("timestamp"))
     )
-    
+
     print("Tweet distribution by hour of day:")
     df_with_time.groupBy("hour_of_day") \
         .count() \
@@ -141,16 +137,22 @@ def network_analysis(df: DataFrame):
         .orderBy(desc("followers_int")) \
         .show(20, truncate=False)
 
-# Export short summary of analysis results
 def export_summary(df: DataFrame, output_dir="outputs"):
+
     df.groupBy("author", "account_type", "account_category") \
         .agg(count("*").alias("tweet_count")) \
+        .filter(col("author").isNotNull() & (col("author") != "")) \
+        .filter(col("account_type").isNotNull() & (col("account_type") != "")) \
+        .filter(col("account_category").isNotNull() & (col("account_category") != "")) \
         .orderBy(desc("tweet_count")) \
         .coalesce(1) \
         .write.csv(f"{output_dir}/top_active_accounts.csv", header=True, mode="overwrite")
-    
+
     df.groupBy("account_type", "account_category") \
         .count() \
+        .filter(col("account_type").isNotNull() & (col("account_type") != "")) \
+        .filter(col("account_category").isNotNull() & (col("account_category") != "")) \
+        .filter(col("count").isNotNull()) \
         .orderBy(desc("count")) \
         .coalesce(1) \
         .write.csv(f"{output_dir}/account_distribution.csv", header=True, mode="overwrite")

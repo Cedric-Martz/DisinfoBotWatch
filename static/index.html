@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DisinfoBotWatch</title>
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1"></script>
+    <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>DisinfoBotWatch</h1>
+                    <p>Russian Troll Bot Network Analysis</p>
+                </div>
+                <div class="status" id="status">
+                    <span class="status-dot"></span>
+                    <span id="status-text">Loading...</span>
+                </div>
+            </div>
+        </header>
+        <nav class="nav">
+            <button class="nav-btn active" data-page="overview">Overview</button>
+            <button class="nav-btn" data-page="accounts">Top Bots</button>
+            <button class="nav-btn" data-page="distribution">Distribution</button>
+            <button class="nav-btn" data-page="network">Network</button>
+        </nav>
+        <main class="main">
+            <section id="overview" class="page active">
+                <div class="stats-grid">
+                    <div class="stat-card card-animate">
+                        <div class="stat-icon">[BOT]</div>
+                        <div class="stat-value" data-target="total_bots">0</div>
+                        <div class="stat-label">Total Bots</div>
+                    </div>
+                    <div class="stat-card card-animate">
+                        <div class="stat-icon">[TWEET]</div>
+                        <div class="stat-value" data-target="total_tweets">0</div>
+                        <div class="stat-label">Total Tweets</div>
+                    </div>
+                    <div class="stat-card card-animate">
+                        <div class="stat-icon">[CHART]</div>
+                        <div class="stat-value" data-target="unique_accounts">0</div>
+                        <div class="stat-label">Unique Accounts</div>
+                    </div>
+                    <div class="stat-card card-animate">
+                        <div class="stat-icon">[STATS]</div>
+                        <div class="stat-value" data-target="avg_tweets_per_bot">0</div>
+                        <div class="stat-label">Avg Tweets/Bot</div>
+                    </div>
+                </div>
+                <div class="info-box">
+                    <h2>About This Dataset</h2>
+                    <p>This dataset contains tweets from accounts identified as part of the Russian Internet Research Agency (IRA). All accounts are <strong>confirmed bot accounts</strong> used for coordinated disinformation campaigns.</p>
+                    <ul>
+                        <li>Account metadata (type, category, region, language)</li>
+                        <li>Tweet patterns and retweet ratios</li>
+                        <li>Coordinated posting behavior</li>
+                        <li>Mention networks and interactions</li>
+                    </ul>
+                </div>
+            </section>
+            <section id="accounts" class="page">
+                <div class="page-header">
+                    <h2>Top Active Bot Accounts</h2>
+                    <div class="controls">
+                        <label>Show top:
+                            <select id="top-n-select">
+                                <option value="10">10</option>
+                                <option value="20" selected>20</option>
+                                <option value="30">30</option>
+                                <option value="50">50</option>
+                            </select>
+                        </label>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="topAccountsChart"></canvas>
+                </div>
+                <div class="table-container">
+                    <table id="accountsTable">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Author</th>
+                                <th>Type</th>
+                                <th>Category</th>
+                                <th>Tweets</th>
+                            </tr>
+                        </thead>
+                        <tbody id="accountsTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <section id="distribution" class="page">
+                <div class="page-header">
+                    <h2>Account Distribution</h2>
+                </div>
+                <div class="chart-grid">
+                    <div class="chart-container">
+                        <h3>By Account Type</h3>
+                        <canvas id="typeDistributionChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>By Account Category</h3>
+                        <canvas id="categoryDistributionChart"></canvas>
+                    </div>
+                </div>
+            </section>
+            <section id="network" class="page">
+                <div class="page-header">
+                    <h2>Bot Network Graph</h2>
+                </div>
+                <div class="network-container">
+                    <div id="networkPlaceholder">
+                        <p>Loading network visualization...</p>
+                        <p style="font-size: 0.9em; color: #999;">This may take a moment... Go grab a coffee!</p>
+                    </div>
+                    <iframe id="networkFrame" src="" style="display: none;"></iframe>
+                </div>
+                <div class="network-info">
+                    <p>Drag to pan | Scroll to zoom | Hover for details</p>
+                </div>
+            </section>
+        </main>
+        <footer class="footer">
+            <p>DisinfoBotWatch | Analysis of Russian Troll Bot Networks | Data: https://github.com/fivethirtyeight/russian-troll-tweets</p>
+        </footer>
+    </div>
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

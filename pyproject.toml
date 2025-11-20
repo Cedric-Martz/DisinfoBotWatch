@@ -1,9 +1,19 @@
 [project]
 name = "disinfobotwatch"
 version = "0.1.0"
-description = "Add your description here"
+description = "Analysis of Russian troll tweets"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "pyspark>=4.0.1",
+    "pyspark==3.3.2",
+    "flask",
+    "flask-cors",
+    "pandas",
+    "numpy",
+    "nltk",
+    "pyvis",
+    "matplotlib",
+    "seaborn",
+    "networkx",
+    "scipy",
 ]

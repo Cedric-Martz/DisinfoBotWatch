@@ -4,21 +4,24 @@ from src.analysis import (
     top_active_accounts,
     retweet_analysis,
     content_analysis,
-    temporal_analysis,
     coordinated_behavior,
-    network_analysis,
     export_summary
 )
 
 if __name__ == "__main__":
-    df = init_spark.init()
-    
-    basic_stats(df)
-    top_active_accounts(df)
-    retweet_analysis(df)
-    content_analysis(df)
-    # temporal_analysis(df)  # deactivated - corrupted data in publish_date
-    coordinated_behavior(df)
-    # network_analysis(df)  # deactivated - corrupted data in followers/following
-    
-    export_summary(df)
+    dataframe = init_spark.init()
+
+    basic_stats(dataframe)
+    top_active_accounts(dataframe)
+    retweet_analysis(dataframe)
+    content_analysis(dataframe)
+    coordinated_behavior(dataframe)
+    export_summary(dataframe)
+
+    # Network analysis is done separately after Spark, because we had serialization issues :-(
+    print("Generating network analysis...")
+    try:
+        from src.network_viz import network_analysis_improved
+        network_analysis_improved(dataframe)
+    except Exception as e:
+        print(f"Network analysis failed: {e}")
