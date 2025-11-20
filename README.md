@@ -93,6 +93,8 @@ cd data
 # Make the script executable and run it
 chmod +x dl_data.sh
 ./dl_data.sh
+# Then go back to previous path
+cd ..
 ```
 
 The script will download CSV files containing tweet data and metadata from https://github.com/fivethirtyeight/russian-troll-tweets
