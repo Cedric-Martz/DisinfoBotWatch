@@ -2,13 +2,11 @@
 
 Analysis and visualization of Russian Internet Research Agency (IRA) troll bot networks using Apache Spark and Flask.
 
-### Key Features
+## Technologies used
 
-- **Large-scale Data Processing**: Apache Spark for batch processing of hundreds of thousands of tweets
-- **Network Analysis**: Graph-based analysis of bot mention patterns and coordinated behavior
-- **Interactive Dashboard**: Web-based visualization of analysis results with real-time data exploration
-- **Account Classification**: Distribution analysis across bot types, categories, regions, and languages
-- **Coordinated Behavior Detection**: Identification of synchronized posting patterns and network clusters
+- **Python**: It's easy to use, but most importantly, it's the standard in data analysis because it's overall the best language for this kind of task.
+- **uv**: An extremely fast Python package and project manager, written in Rust, it's slowly becoming the new standard.
+- **Spark**: For this kind of data analysis, we don't really need realtime streaming, which is why spark, a technology that's using batch processing, is perfectly fit for the job. We don't need either to go very low level, so there's really no need to go with MapReduce, it would be a lot more work for results that don't really differ.
 
 ## Requirements
 
