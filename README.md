@@ -7,6 +7,17 @@ Analysis and visualization of Russian Internet Research Agency (IRA) troll bot n
 - **Python**: It's easy to use, but most importantly, it's the standard in data analysis because it's overall the best language for this kind of task.
 - **uv**: An extremely fast Python package and project manager, written in Rust, it's slowly becoming the new standard.
 - **Spark**: For this kind of data analysis, we don't really need realtime streaming, which is why spark, a technology that's using batch processing, is perfectly fit for the job. We don't need either to go very low level, so there's really no need to go with MapReduce, it would be a lot more work for results that don't really differ.
+- **Flask**: Lightweight web framework for REST API
+- **NetworkX**: Graph analysis and network construction
+- **Pandas**: Data manipulation and analysis
+
+### Frontend Dashboard
+- **Konsta UI**: Mobile-first UI components with iOS design
+- **React 19**: Modern frontend framework with TypeScript
+- **Vite**: Ultra-fast build tool and dev server
+- **Tailwind CSS v4**: Utility-first CSS framework
+- **Recharts**: Composable charting library for React
+- **Axios**: HTTP client for API communication
 
 ## Requirements
 
@@ -99,74 +110,90 @@ The script will download CSV files containing tweet data and metadata from https
 
 ## Running the Project
 
-### Option 1: Complete Pipeline
+### Option 1: Run Analysis Pipeline
 
-This will run the analysis and start the dashboard:
+Run the complete data analysis and generate outputs:
 
 ```bash
-./run.sh
+./run_analysis.sh
 ```
 
 This script automatically:
-1. Checks for existing analysis output
-2. If missing, runs the complete pipeline with `uv run python main.py`
-3. Starts the Flask web server
-
-The dashboard will be available at: `http://localhost:5000`
-
-### Option 2: Run Analysis Only
-
-To run just the data analysis without starting the server:
-
-```bash
-uv run python main.py
-```
+1. Runs the complete Spark pipeline with `uv run python main.py`
+2. Generates analysis outputs in the `outputs/` directory
+3. Creates the network visualization
 
 This generates:
 - `outputs/top_active_accounts.csv` - Most active bot accounts
 - `outputs/account_distribution.csv` - Bot classification statistics
 - `outputs/network.html` - Interactive network graph visualization
 
-### Option 3: Start Dashboard with Existing Data
+### Option 2: Launch Dashboard
 
-If analysis has already been run, you can start just the web server with:
+Start the dashboard with the script:
 
+```bash
+./run_dashboard.sh
+```
+
+This script automatically:
+1. Checks if analysis data exists (warn you otherwise)
+2. Installs dashboard dependencies if needed
+3. Starts Flask API backend on `http://localhost:5000`
+4. Starts Konsta UI frontend on `http://localhost:5173`
+
+**Dashboard URLs:**
+- Frontend UI: `http://localhost:5173`
+- Backend API: `http://localhost:5000`
+
+Press `Ctrl+C` to stop both services.
+
+### Option 3: Run Components Separately
+
+**Analysis only:**
+```bash
+uv run python main.py
+```
+
+**Backend API only:**
 ```bash
 uv run python api.py
 ```
 
-Dashboard URL: `http://localhost:5000`
+**Frontend dashboard only:**
+```bash
+cd konsta && npm run dev
+```
 
 ## Dashboard Features
 
+The dashboard is built with **Konsta UI**
+
 ### Overview Tab
 
-- Total bot accounts analyzed
-- Total tweets processed
-- Unique account count
-- Average tweets per bot
+- **Statistics Cards**: Total bots, tweets, unique accounts, and average tweets per bot
+- **Dataset Information**: About the Russian IRA bot dataset
+- **Animated counters** some fancy animations
 
 ### Top Bots Tab
 
-- Ranked list of most active bot accounts
-- Tweet count per account
-- Account classification (type and category)
-- Horizontal bar chart visualization
+- **Interactive bar chart** showing most active bot accounts
+- **Filterable table** with adjustable number
+- **Account details**: Type, category, and tweet count
 
 ### Distribution Tab
 
-- Account type distribution (pie chart)
-- Account category distribution (pie chart)
-- Visual breakdown of bot classification patterns
+- **Pie charts** for account type and category distribution
+- **Top 10 categories** displayed
+- **Interactive tooltips** with percentages
 
-### Bot Network Graph Tab
+### Network Tab
 
-- Interactive network visualization
+- **Interactive network visualization** embedded from analysis
 - Node size proportional to network degree
 - Edge weights representing interaction strength
-- Two interaction types: mentions and coordinated posting
 - Drag to pan, scroll to zoom
-- Hover over nodes for account information
+- Hover for account information
 
 ## Analysis Details
 
@@ -225,6 +252,10 @@ The data is sourced from FiveThirtyEight's publicly released IRA troll tweets da
 - [Flask Documentation](https://flask.palletsprojects.com/)
 - [NetworkX Documentation](https://networkx.org/)
 - [FiveThirtyEight IRA Data](https://github.com/fivethirtyeight/russian-troll-tweets)
+- [Konsta](https://konstaui.com/)
+- [Npm](https://www.npmjs.com/)
+- [debunk.org](https://www.debunk.org/coining-lies-state-budget-financing-of-russian-propaganda)
+- [The Conversation](https://theconversation.com/i-investigated-millions-of-tweets-from-the-kremlins-troll-factory-and-discovered-classic-propaganda-techniques-reimagined-for-the-social-media-age-237712)
 
 Valentin RAPP
 Cédric MARTZ

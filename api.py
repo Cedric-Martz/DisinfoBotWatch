@@ -1,9 +1,9 @@
-from flask import Flask, jsonify, send_from_directory
+from flask import Flask, jsonify, send_from_directory, redirect
 from flask_cors import CORS
 import pandas as pd
 from pathlib import Path
 
-app = Flask(__name__, static_folder='static', static_url_path='/static')
+app = Flask(__name__)
 CORS(app)
 _cached_data = {}
 
@@ -49,7 +49,17 @@ def load_top_accounts():
 
 @app.route('/')
 def index():
-    return send_from_directory('.', 'static/index.html')
+    return jsonify({
+        'message': 'DisinfoBotWatch API',
+        'dashboard': 'http://localhost:5173',
+        'endpoints': {
+            'health': '/api/health',
+            'stats': '/api/stats',
+            'top_accounts': '/api/top-accounts',
+            'distribution': '/api/account-distribution',
+            'network_html': '/api/network-html'
+        }
+    })
 
 @app.route('/api/health')
 def health():
