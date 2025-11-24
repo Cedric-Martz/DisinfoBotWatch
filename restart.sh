@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# This script remove network files, then, run script run_analysis.sh and run_dashboard.sh
 rm -rf ./outputs/network.*
-uv run python main.py
-./run.sh
+./run_analysis.sh
+./run_dashboard.sh

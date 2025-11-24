@@ -23,27 +23,22 @@ echo ""
 
 if [ ! -d "outputs" ] || [ -z "$(ls -A outputs 2>/dev/null)" ]; then
     echo "No analysis data found!"
-    echo "Please run './run_analysis.sh' first to generate the required data."
+    echo "Please run './run_analysis.sh' to generate the required data first"
     echo ""
     exit 1
 fi
-
 if [ ! -d "konsta/node_modules" ]; then
-    echo "Installing dashboard dependencies..."
+    echo "Installing dashboard dependencies"
     cd konsta && npm install && cd ..
     echo ""
 fi
-
 echo "Starting DisinfoBotWatch Dashboard..."
 echo "Backend API: http://localhost:5000"
 echo "Frontend UI: http://localhost:5173"
 echo ""
 echo "Press Ctrl+C to stop both services"
 echo ""
-
-
 trap cleanup SIGINT SIGTERM EXIT
-
 echo "Starting Flask API..."
 uv run python api.py &
 API_PID=$!

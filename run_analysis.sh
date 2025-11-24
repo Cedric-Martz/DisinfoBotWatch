@@ -7,18 +7,10 @@ echo " |    |  \\|  |/  ___/  |/    \\   __\\/  _ \\|    |  _//  _ \\   __\\   \
 echo " |    \`   \\  |\\___ \\|  |   |  \\  | (  <_> )    |   (  <_> )  |  \\        /  / __ \\|  | \\  \\___|   Y  \\";
 echo "/_______  /__/____  >__|___|  /__|  \\____/|______  /\\____/|__|   \\__/\\  /  (____  /__|  \\___  >___|  /";
 echo "        \\/        \\/        \\/                   \\/                   \\/        \\/          \\/     \\/ ";
-
-if [ ! -d "outputs" ] || [ -z "$(ls -A outputs 2>/dev/null)" ]; then
-    echo "[*] No analysis data found. Running analysis first..."
-    echo ""
-    uv run python main.py
-    echo ""
-fi
-
-echo "Starting Flask dashboard server..."
-echo "Dashboard will be available at: http://localhost:5000"
 echo ""
-echo "Press Ctrl+C to stop the server"
+echo "Running Spark analysis..."
 echo ""
-
-uv run python api.py
+uv run python main.py
+echo ""
+echo "Analysis completed, results in outputs/"
+echo "Run './run_dashboard.sh' to view results"
