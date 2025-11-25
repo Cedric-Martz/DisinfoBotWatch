@@ -16,4 +16,5 @@ dependencies = [
     "seaborn",
     "networkx",
     "scipy",
+    "setuptools",
 ]
