@@ -1,10 +1,8 @@
 from pyspark.sql import DataFrame
 from pyspark.sql.functions import (
-    col, count, countDistinct, desc, asc, avg, sum, min, max,
-    when, hour, to_timestamp, explode, split, lower, regexp_extract,
-    length, datediff, unix_timestamp, lag, row_number
+    col, count, countDistinct, desc, avg, sum, min, max,
+    when, hour, length
 )
-from pyspark.sql.window import Window
 from pyspark.sql.functions import to_timestamp as try_to_timestamp_func
 
 

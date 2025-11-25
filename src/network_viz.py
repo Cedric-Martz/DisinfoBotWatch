@@ -1,8 +1,6 @@
 from pyspark.sql import DataFrame
-from pyspark.sql.functions import col, countDistinct, collect_list, struct
 import networkx as nx
 from pyvis.network import Network
-import pandas as pd
 import re
 
 
@@ -83,7 +81,8 @@ def visualize_network(graphic: nx.Graph, output_path: str = "outputs/network.htm
 
         with open(output_path, 'r', encoding='utf-8') as f:
             content = f.read()
-        content = content.replace('src="lib/', 'src="DISABLED_lib/')
+        import re
+        content = re.sub(r'<script src="lib/bindings/utils\.js"></script>\s*', '', content)
         with open(output_path, 'w', encoding='utf-8') as f:
             f.write(content)
 
